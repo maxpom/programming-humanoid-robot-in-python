@@ -21,7 +21,9 @@
 
 
 from pid import PIDAgent
-from keyframes import hello
+from wipe_forehead import wipe_forehead
+import numpy as np
+
 
 
 class AngleInterpolationAgent(PIDAgent):
@@ -32,6 +34,7 @@ class AngleInterpolationAgent(PIDAgent):
                  sync_mode=True):
         super(AngleInterpolationAgent, self).__init__(simspark_ip, simspark_port, teamname, player_id, sync_mode)
         self.keyframes = ([], [], [])
+        self.offset=0
 
     def think(self, perception):
         target_joints = self.angle_interpolation(self.keyframes, perception)
@@ -42,9 +45,25 @@ class AngleInterpolationAgent(PIDAgent):
         target_joints = {}
         # YOUR CODE HERE
 
+        jointname = keyframes[0]
+        time = keyframes[1]
+        keys = keyframes[2]
+
+        
+        if(self.offset==0):
+            self.offset= perception.time
+
+        for j in range(len(jointname)):
+            xp=time[j]
+            fp=[0]*len(xp)
+            x= perception.time
+            for i in range(len(xp)):  
+                fp[i]=keys[j][i][0]  #only first element for spline interpolation
+            target_joints[jointname[j]]=np.interp(x-self.offset,xp,fp)
+
         return target_joints
 
 if __name__ == '__main__':
     agent = AngleInterpolationAgent()
-    agent.keyframes = hello()  # CHANGE DIFFERENT KEYFRAMES
+    agent.keyframes = wipe_forehead(2)  # CHANGE DIFFERENT KEYFRAMES
     agent.run()
