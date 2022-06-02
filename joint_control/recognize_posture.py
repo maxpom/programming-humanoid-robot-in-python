@@ -55,7 +55,8 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
         predicted = self.posture_classifier.predict(data)
         
         posture = classes[int(predicted)]
-        if(posture=="HeadBack"):
+        
+        if(posture=="HeadBack"):  #workaround
             posture= "Belly"
 
         elif(posture=="StandInit"):
@@ -64,7 +65,7 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
             posture="Stand"
         
 
-        print("Result " + posture)
+        #print("Result " + posture)
 
         return posture
 
