@@ -81,6 +81,7 @@ class AngleInterpolationAgent(PIDAgent):
             
         if(perception.time-self.offset>maxtime): # Animation for Keyframe done
             self.animationDone=True 
+            self.keyframes= ([],[],[])
     
         return target_joints
 

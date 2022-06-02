@@ -12,7 +12,10 @@
 
 from os import listdir
 from angle_interpolation import AngleInterpolationAgent
-from keyframes.wipe_forehead import wipe_forehead
+from keyframes.rightBackToStand import rightBackToStand
+from keyframes.rightBellyToStand import rightBellyToStand
+from keyframes.leftBackToStand import leftBackToStand
+from keyframes.leftBellyToStand import leftBellyToStand
 import pickle
 import numpy as np
 
@@ -38,23 +41,25 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
         joints = ['LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch']
         
         
-        angles = []
-        
+        data = []
+        imu = perception.imu
+
         for joint in joints:
-            angles.append(perception.joint[joint])
+            data.append(perception.joint[joint])
     
-        angles.append(perception.imu[0])
-        angles.append(perception.imu[1])
-        angles = np.array([angles])
+        data.append(imu[0])
+        data.append(imu[1])
+        data = np.array([data])
         
-        predicted = self.posture_classifier.predict(angles)
+        predicted = self.posture_classifier.predict(data)
         
         posture = classes[int(predicted)]
+        
         print("Result " + posture)
 
         return posture
 
 if __name__ == '__main__':
     agent = PostureRecognitionAgent()
-    agent.keyframes = wipe_forehead(1)  # CHANGE DIFFERENT KEYFRAMES
+    agent.keyframes = leftBackToStand()  # CHANGE DIFFERENT KEYFRAMES
     agent.run()
