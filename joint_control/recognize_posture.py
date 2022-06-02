@@ -11,6 +11,7 @@
 
 
 from os import listdir
+from turtle import pos
 from angle_interpolation import AngleInterpolationAgent
 from keyframes.rightBackToStand import rightBackToStand
 from keyframes.rightBellyToStand import rightBellyToStand
@@ -54,7 +55,15 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
         predicted = self.posture_classifier.predict(data)
         
         posture = classes[int(predicted)]
+        if(posture=="HeadBack"):
+            posture= "Belly"
+
+        elif(posture=="StandInit"):
+            posture="Back"
+        elif(posture=="Belly"):
+            posture="Stand"
         
+
         print("Result " + posture)
 
         return posture
