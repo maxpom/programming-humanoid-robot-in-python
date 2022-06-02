@@ -21,7 +21,7 @@
 
 
 from pid import PIDAgent
-from wipe_forehead import wipe_forehead
+from keyframes.wipe_forehead import wipe_forehead
 import numpy as np
 
 

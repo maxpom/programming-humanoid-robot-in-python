@@ -10,9 +10,11 @@
 '''
 
 
+from os import listdir
 from angle_interpolation import AngleInterpolationAgent
-from keyframes import hello
-
+from keyframes.wipe_forehead import wipe_forehead
+import pickle
+import numpy as np
 
 class PostureRecognitionAgent(AngleInterpolationAgent):
     def __init__(self, simspark_ip='localhost',
@@ -54,5 +56,5 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
 
 if __name__ == '__main__':
     agent = PostureRecognitionAgent()
-    agent.keyframes = hello()  # CHANGE DIFFERENT KEYFRAMES
+    agent.keyframes = wipe_forehead(1)  # CHANGE DIFFERENT KEYFRAMES
     agent.run()
