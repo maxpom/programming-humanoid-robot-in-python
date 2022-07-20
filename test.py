@@ -101,6 +101,6 @@ for i in range(0, 20):
 
 
 # Unsubscribe the module.
-faceProxy.unsubscribe("Test_Face")
+blobProxy.unsubscribe("Test_blob")
 
 print "Test terminated successfully.
