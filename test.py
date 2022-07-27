@@ -14,18 +14,45 @@ import time
 
 from naoqi import ALProxy
 
-
-IP = "nao.local"  # Replace here with your NaoQi's IP address.
+IP = "nao2.local"  # Replace here with your NaoQi's IP address.
 PORT = 9559
 
 # Create a proxy to ALFaceDetection
 try:
   blobProxy = ALProxy("ALColorBlobDetection", IP, PORT)
 except Exception, e:
-  print "Error when creating face detection proxy:"
+  print "Error when creating blob detection proxy:"
   print str(e)
   exit(1)
 
+try:
+  managerProxy = ALProxy("ALBehaviorManager", IP, PORT)
+except Exception, e:
+  print "Error when creating manager proxy:"
+  print str(e)
+  exit(1)
+
+try:
+  videoProxy = ALProxy("ALVideoDevice", IP, PORT)
+except Exception, e:
+  print "Error when creating video proxy:"
+  print str(e)
+  exit(1)
+
+videoProxy.setActiveCamera(0)
+#subscribeId = videoProxy.subscribe("test")
+
+
+try:
+  redBallProxy = ALProxy("ALRedBallDetection", IP, PORT)
+except Exception, e:
+  print "Error when creating video proxy:"
+  print str(e)
+  exit(1)
+
+
+
+print "test"
 # Subscribe to the ALFaceDetection proxy
 # This means that the module will write in ALMemory with
 # the given period below
@@ -58,7 +85,7 @@ if( blobProxy.getAutoExposure()==False):
     blobProxy.setAutoExposure=True
 
 # A simple loop that reads the memValue and checks whether faces are detected.
-for i in range(0, 20):
+for i in range(0, 1):
   time.sleep(0.5)
   val = memoryProxy.getData(memValue)
 
@@ -102,5 +129,5 @@ for i in range(0, 20):
 
 # Unsubscribe the module.
 blobProxy.unsubscribe("Test_blob")
-
-print "Test terminated successfully.
+managerProxy.stopAllBehaviors()
+print "Test terminated successfully."
