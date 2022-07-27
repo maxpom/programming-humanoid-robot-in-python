@@ -17,6 +17,8 @@ from naoqi import ALProxy
 IP = "nao2.local"  # Replace here with your NaoQi's IP address.
 PORT = 9559
 
+
+"""
 # Create a proxy to ALFaceDetection
 try:
   blobProxy = ALProxy("ALColorBlobDetection", IP, PORT)
@@ -39,7 +41,11 @@ except Exception, e:
   print str(e)
   exit(1)
 
-videoProxy.setActiveCamera(0)
+
+
+
+
+#videoProxy.setActiveCamera(0)
 #subscribeId = videoProxy.subscribe("test")
 
 
@@ -49,10 +55,36 @@ except Exception, e:
   print "Error when creating video proxy:"
   print str(e)
   exit(1)
+"""
 
+try:
+  tracker = ALProxy("ALTracker", ip, port)
+except Exception, e:
+  print "Error when creating video proxy:"
+  print str(e)
+  exit(1)
+
+
+def track_ball(self, target_name, diameter):
+        self.tracker.registerTarget(target_name, diameter)
+        time.sleep(3.0)
+        temp = self.tracker.getRegisteredTargets()
+        time.sleep(1.0)
+        print temp
+        temp2 = self.tracker.getMode()
+        print "in mode: " + temp2
+        self.motion.setStiffnesses("Head", 1.0)
+        self.tracker.track(target_name)
+        time.sleep(10.0)
+        self.tracker.stopTracker()
+        self.motion.setStiffnesses("Head", 0)
+
+track_ball()
 
 
 print "test"
+
+"""
 # Subscribe to the ALFaceDetection proxy
 # This means that the module will write in ALMemory with
 # the given period below
@@ -125,9 +157,9 @@ for i in range(0, 1):
       print "Error msg %s" % (str(e))
   else:
     print "No face detected"
-
+"""
 
 # Unsubscribe the module.
-blobProxy.unsubscribe("Test_blob")
-managerProxy.stopAllBehaviors()
+tracker.unsubscribe("Test_blob")
+#managerProxy.stopAllBehaviors()
 print "Test terminated successfully."
